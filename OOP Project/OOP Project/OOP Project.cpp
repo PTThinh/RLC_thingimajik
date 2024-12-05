@@ -3,10 +3,11 @@
 #include <cmath>
 #include <complex>
 #include "Component.h"
+#define PI 3.1415926535898 // idk why or how but M_PI from <cmath> doesnt work ?
 
 using namespace std;
-extern double Vm, w, phi;
-extern complex<double> Vphasor;
+double Vm, w, phi;
+complex<double> Vphasor;
 
 void InputVoltage();
 
@@ -34,9 +35,11 @@ void InputVoltage()
     cout << "Input your voltage source's angular frequency" << endl;
     cout << "w = "; cin >> w;
     cout << "Input your voltage source's offset angle (degree)" << endl;
-    cout << "phi= "; cin >> phi;
+    cout << "phi = "; cin >> phi;
 
 
-    cout << "You have inputed the voltage source V(t) = " << Vm << ".sin(" << w << "t +" << phi << "deg)" << endl;
-    
+    cout << "You have inputed the voltage source V(t) = " << Vm << ".sin(" << w << "t + " << phi << "deg)" << endl;
+    double phirad = phi*PI/180.0;
+    Vphasor = complex<double>(cos(phirad), sin(phirad)) * Vm;
+
 }

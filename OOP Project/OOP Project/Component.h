@@ -7,7 +7,8 @@
 #include <complex>
 
 using namespace std;
-
+extern double Vm, w, phi;
+extern complex<double> Vphasor;
 
 class Component
 {
