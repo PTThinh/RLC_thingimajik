@@ -43,3 +43,15 @@ void InputVoltage()
     Vphasor = complex<double>(cos(phirad), sin(phirad)) * Vm;
 
 }
+
+
+void InputCircuit()
+{
+    int paraNumber;
+    //string 
+    cout << "Input the number of branches that came from your node";
+    cin >> paraNumber;
+    cout << "Input circuit, input R L C and its corresponding value to add component, input E to end that branch and move on new branch";
+    
+    //cin >> 
+}

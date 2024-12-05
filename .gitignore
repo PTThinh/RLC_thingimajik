@@ -1,0 +1,15 @@
+.vs/
+*.user
+*.suo
+*.cache
+*.log
+*.tlog
+*.pdb
+*.obj
+*.ipch
+*.aps
+*.ilk
+*.pch
+*.idb
+*.opendb
+*.VC.db
