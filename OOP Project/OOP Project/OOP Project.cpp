@@ -1,21 +1,42 @@
-// OOP Project.cpp : This file contains the 'main' function. Program execution begins and ends there.
-//
-
+﻿
 #include <iostream>
+#include <cmath>
+#include <complex>
+#include "Component.h"
+
+using namespace std;
+extern double Vm, w, phi;
+extern complex<double> Vphasor;
+
+void InputVoltage();
 
 int main()
 {
-    std::cout << "Hello World!\n";
-    // test :)
+    InputVoltage();
+
+    int R, C, L;
+    cout << "Input your circuit here:" << endl;
+    cout << "Input the number of Resistors in your circuit" << endl;
+    cin >> R;
+    cout << "The number of Capacitor:" << endl;
+    cin >> C;
+    cout << "The number of Inductor:" << endl;
+    cin >> L;
+
 }
 
-// Run program: Ctrl + F5 or Debug > Start Without Debugging menu
-// Debug program: F5 or Debug > Start Debugging menu
+void InputVoltage()
+{
+    cout << "Input your voltage source in this manner: V(t) = Vm.sin(wt + phi)" << endl;
 
-// Tips for Getting Started: 
-//   1. Use the Solution Explorer window to add/manage files
-//   2. Use the Team Explorer window to connect to source control
-//   3. Use the Output window to see build output and other messages
-//   4. Use the Error List window to view errors
-//   5. Go to Project > Add New Item to create new code files, or Project > Add Existing Item to add existing code files to the project
-//   6. In the future, to open this project again, go to File > Open > Project and select the .sln file
+    cout << "Input your max voltage" << endl;
+    cout << "Vmax = "; cin >> Vm;
+    cout << "Input your voltage source's angular frequency" << endl;
+    cout << "w = "; cin >> w;
+    cout << "Input your voltage source's offset angle (degree)" << endl;
+    cout << "phi= "; cin >> phi;
+
+
+    cout << "You have inputed the voltage source V(t) = " << Vm << ".sin(" << w << "t +" << phi << "deg)" << endl;
+    
+}
