@@ -1,12 +1,37 @@
 {
   "Version": 1,
   "WorkspaceRootPath": "D:\\VGU\\2024-2025\\OOP\\Codes\\OOPFinalProject\\RLC_thingimajik\\OOP Project\\",
-  "Documents": [],
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{5D34B523-C0E5-4C49-996E-DB16393CD381}|OOP Project\\OOP Project.vcxproj|D:\\VGU\\2024-2025\\OOP\\Codes\\OOPFinalProject\\RLC_thingimajik\\OOP Project\\OOP Project\\OOP Project.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{5D34B523-C0E5-4C49-996E-DB16393CD381}|OOP Project\\OOP Project.vcxproj|solutionrelative:OOP Project\\OOP Project.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    }
+  ],
   "DocumentGroupContainers": [
     {
       "Orientation": 0,
       "VerticalTabListWidth": 256,
-      "DocumentGroups": []
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 0,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "OOP Project.cpp",
+              "DocumentMoniker": "D:\\VGU\\2024-2025\\OOP\\Codes\\OOPFinalProject\\RLC_thingimajik\\OOP Project\\OOP Project\\OOP Project.cpp",
+              "RelativeDocumentMoniker": "OOP Project\\OOP Project.cpp",
+              "ToolTip": "D:\\VGU\\2024-2025\\OOP\\Codes\\OOPFinalProject\\RLC_thingimajik\\OOP Project\\OOP Project\\OOP Project.cpp",
+              "RelativeToolTip": "OOP Project\\OOP Project.cpp",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAgAAAAOAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2024-12-05T08:06:17.949Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
     }
   ]
 }
