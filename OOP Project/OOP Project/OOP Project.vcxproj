@@ -127,10 +127,20 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Circuit.cpp" />
+    <ClCompile Include="Component.cpp" />
     <ClCompile Include="OOP Project.cpp" />
+    <ClCompile Include="ParallelCircuit.cpp" />
+    <ClCompile Include="SeriesCircuit.cpp" />
+    <ClCompile Include="SingleCircuit.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Circuit.h" />
     <ClInclude Include="Component.h" />
+    <ClInclude Include="OOP_Project.h" />
+    <ClInclude Include="ParallelCircuit.h" />
+    <ClInclude Include="SeriesCircuit.h" />
+    <ClInclude Include="SingleCircuit.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
