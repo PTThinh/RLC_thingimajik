@@ -19,6 +19,8 @@ public:
 	ParallelCircuit(int length_, Circuit** branches_);
 	ParallelCircuit& operator= (const ParallelCircuit& circuit);
 
+	void CalculatePrintedDimension();
+	void PrintCircuit(int* row, int* col);
 };
 
 #endif

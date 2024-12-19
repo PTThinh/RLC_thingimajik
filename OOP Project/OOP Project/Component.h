@@ -1,6 +1,10 @@
 #ifndef _COMPONENT_HEADER_
 #define _COMPONENT_HEADER_
 
+#include <complex>
+
+using namespace std;
+
 enum ComponentType //declare a new "datatype"
 {
 	Resistor,
@@ -23,14 +27,11 @@ public:
 	
 	Component& operator= (const Component& comp_); // operator = to assign value
 
-	void print();
 	
 	//Getters:
 	ComponentType getType() const;
-	double getDouble() const;
+	double getValue() const;
 	complex<double> getImpedance() const;
-
-
 };
 
 #endif

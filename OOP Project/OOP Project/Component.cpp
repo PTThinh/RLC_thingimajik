@@ -6,22 +6,55 @@
 
 using namespace std;
 extern double Vm, w, phi;
-extern complex<double> Vphasor;
 
-Component::Component(string t, double v) //v mean R for resistor, L and C for inductor and capacitor / t is type of component (RLC)
+Component::Component(const ComponentType& type_, double& value_){
+	type = type_;
+	value = value_;
+	double Z;
+	if (type == Resistor) impedance = complex<double>(value_, 0.0);
+	else if (type == Capacitor)
+	{
+		Z = w * value;
+		Z = -1 / Z;
+		impedance = complex<double>(0.0, Z);
+	}
+	else if (type == L_Inductor)
+	{
+		Z = w * value;
+		impedance = complex<double>(0.0, Z);
+	}
+}
+
+Component::Component()
 {
-	type = t;
-	value = v;
-	if (type == "R") impedance = complex<double>(v, 0.0);
-	else if (type == "C")
-	{
-		double Zc = w * v;
-		Zc = -1 / Zc;
-		impedance = complex<double>(0.0, Zc);
-	}
-	else if (type == "L")
-	{
-		double Zl = w * v;
-		impedance = complex<double>(0.0, Zl);
-	}
+	//empty component
+	type = Resistor;
+	value = 0;
+	impedance = complex<double>(0, 0);
+}
+
+Component::Component(const Component& comp_) {
+	type = comp_.getType();
+	value = comp_.getValue();
+	impedance = comp_.getImpedance();
+}
+
+Component& Component::operator=(const Component& comp_)
+{
+	type = comp_.getType();
+	value = comp_.getValue();
+	impedance = comp_.getImpedance();
+	return *this;
+}
+
+ComponentType Component::getType() const {
+	return type;
+}
+
+double Component::getValue() const {
+	return value;
+}
+
+complex<double> Component::getImpedance() const {
+	return impedance;
 }

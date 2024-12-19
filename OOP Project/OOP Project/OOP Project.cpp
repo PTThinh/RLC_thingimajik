@@ -66,17 +66,26 @@ void InputCircuit()
 {
     ShowInputInstructions();
     int len;
-    Circuit** mainCircuit = InputSectionOfCircuit(len);
+    Circuit** inputCircuits = InputSectionOfCircuit(&len);
+    cout << "Input Done, length = " << len << "\n";
+    SeriesCircuit* mainCircuit = new SeriesCircuit(len, inputCircuits);
+    mainCircuit->CalculatePrintedDimension();
+    CLEAR_SCREEN;
+    int row = 1;
+    int col = 1;
+    mainCircuit->PrintCircuit(&row, &col);
+    for (int i = 0; i <= mainCircuit->printedHeight; i++)
+    {
+        cout << "\n";
+    }
 }
-
-Circuit** InputSectionOfCircuit(int& length)
+Circuit** InputSectionOfCircuit(int* length)
 {
     Circuit** inputCircuit = new Circuit*[MAX_COMPONENTS];
     int inputCircuitLength = 0;
     string input;
     double inputValue;
-    // bool isInput = true;
-
+    
     while (true)
     {
         cout << "Enter a command: ";
@@ -86,25 +95,29 @@ Circuit** InputSectionOfCircuit(int& length)
             cout << "Enter the resistance: ";
             cin >> inputValue;
             inputCircuit[inputCircuitLength] = new SingleCircuit(Component(Resistor, inputValue));
+            inputCircuit[inputCircuitLength]->CalculatePrintedDimension(); // calculate its length
+
             inputCircuitLength++;
         }
         else if (input == "L")
         {
-            cout << "Enter the inductance thingy for L: ";
+            cout << "Enter the inductance: ";
             cin >> inputValue;
             inputCircuit[inputCircuitLength] = new SingleCircuit(Component(L_Inductor, inputValue));
+            inputCircuit[inputCircuitLength]->CalculatePrintedDimension(); // calculate its length
             inputCircuitLength++;
         }
         else if (input == "C")
         {
-            cout << "Enter the capacitance thingy for C: ";
+            cout << "Enter the capacitance: ";
             cin >> inputValue;
             inputCircuit[inputCircuitLength] = new SingleCircuit(Component(Capacitor, inputValue));
+            inputCircuit[inputCircuitLength]->CalculatePrintedDimension(); // calculate its length
             inputCircuitLength++;
         }
         else if (input == "E")
         {
-            length = inputCircuitLength;
+            *length = inputCircuitLength; //dereferencing pointer to get value
             return inputCircuit;
         }
         else
@@ -114,7 +127,7 @@ Circuit** InputSectionOfCircuit(int& length)
             {
                 branchesCount = stoi(input);
             }
-            catch (const invalid_argument& e)
+            catch (const invalid_argument& e)//e stand for error
             {
                 cout << "Invalid input! Please enter a valid input." << endl;
                 continue;
@@ -123,10 +136,17 @@ Circuit** InputSectionOfCircuit(int& length)
             for (int i = 0; i < branchesCount; i++)
             {
                 int branchComponentCount;
-                Circuit** tmp = InputSectionOfCircuit(branchComponentCount);
+                Circuit** tmp = InputSectionOfCircuit(&branchComponentCount);
                 branches[i] = new SeriesCircuit(branchComponentCount, tmp);
+                branches[i]->CalculatePrintedDimension();
             }
             inputCircuit[inputCircuitLength] = new ParallelCircuit(branchesCount, branches);
+            inputCircuit[inputCircuitLength]->CalculatePrintedDimension();
+            inputCircuitLength++;
         }
     }
+}
+
+void MoveCursor(int row, int col) {
+    cout << "\033[" << row << ";" << col << "H"; //will move cursor to the dersired coord
 }

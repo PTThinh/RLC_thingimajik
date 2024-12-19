@@ -18,5 +18,7 @@ public:
 	SeriesCircuit(int length_, Circuit** circuits_); 
 	SeriesCircuit& operator= (const SeriesCircuit& circuit); 
 
+	void CalculatePrintedDimension();
+	void PrintCircuit(int* row, int* col);
 };
 #endif
