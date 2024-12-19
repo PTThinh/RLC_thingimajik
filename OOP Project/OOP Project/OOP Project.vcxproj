@@ -129,6 +129,7 @@
   <ItemGroup>
     <ClCompile Include="Circuit.cpp" />
     <ClCompile Include="Component.cpp" />
+    <ClCompile Include="Input.cpp" />
     <ClCompile Include="OOP Project.cpp" />
     <ClCompile Include="ParallelCircuit.cpp" />
     <ClCompile Include="SeriesCircuit.cpp" />
@@ -137,6 +138,7 @@
   <ItemGroup>
     <ClInclude Include="Circuit.h" />
     <ClInclude Include="Component.h" />
+    <ClInclude Include="Input.h" />
     <ClInclude Include="OOP_Project.h" />
     <ClInclude Include="ParallelCircuit.h" />
     <ClInclude Include="SeriesCircuit.h" />

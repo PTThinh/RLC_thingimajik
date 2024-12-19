@@ -21,6 +21,8 @@ public:
 
 	void CalculatePrintedDimension();
 	void PrintCircuit(int* row, int* col);
+	void CalculateImpedance();
+	void CalculateRUI(complex<double> voltageEq);
 };
 
 #endif

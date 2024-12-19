@@ -19,6 +19,8 @@ private:
 	ComponentType type;
 	double value;
 	complex<double> impedance;
+	complex<double> voltage;
+	complex<double> current;
 
 public:
 	Component(const ComponentType &type_, double &value); // create new component; the _ help us - the coder to differ to the private data
@@ -32,6 +34,12 @@ public:
 	ComponentType getType() const;
 	double getValue() const;
 	complex<double> getImpedance() const;
+
+	// set R, U, I. We don't do R here because R can be calculated already
+	void SetRUI(complex<double> U, complex<double> I);
+
+	// print out the information of the component
+	void DisplayInfo();
 };
 
 #endif

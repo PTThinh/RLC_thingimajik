@@ -1,152 +1,179 @@
-﻿
-#include <iostream>
-#include <cmath>
-#include <complex>
-
-#include "Component.h"
+﻿#include "OOP_Project.h"
 #include "Circuit.h"
-#include "OOP_Project.h"
+#include "Component.h"
+#include "Input.h"
 #include "ParallelCircuit.h"
 #include "SeriesCircuit.h"
 #include "SingleCircuit.h"
-
-// idk why or how but M_PI from <cmath> doesnt work ?
-#define PI 3.1415926535898
-#define MAX_COMPONENTS 10000
+#include <cmath>
+#include <complex>
+#include <conio.h>
+#include <iostream>
+#include <windows.h>
 
 using namespace std;
+
+// Global Variables
 double Vm, w, phi;
 complex<double> Vphasor;
 
-void InputVoltage();
+SeriesCircuit* mainCircuit;
 
-int main()
-{
-    InputVoltage();
-    InputCircuit();
+int** componentPosition = new int* [MAX_COMPONENTS];
+Component** componentList = new Component * [MAX_COMPONENTS];
+int componentCount = 0;
+int selectedComponent = 0;
 
+bool restart = true;
 
-}
-
-void InputVoltage()
-{
-    cout << "Input your voltage source in this manner: V(t) = Vm.sin(wt + phi)" << endl;
-
-    cout << "Input your max voltage" << endl;
-    cout << "Vmax = "; cin >> Vm;
-    cout << "Input your voltage source's angular frequency" << endl;
-    cout << "w = "; cin >> w;
-    cout << "Input your voltage source's offset angle (degree)" << endl;
-    cout << "phi = "; cin >> phi;
-
-
-    cout << "You have inputed the voltage source V(t) = " << Vm << ".sin(" << w << "t + " << phi << "deg)" << endl;
-    double phirad = phi*PI/180.0;
-    Vphasor = complex<double>(cos(phirad), sin(phirad)) * Vm;
-
-}
-
-void ShowInputInstructions()
-{
-    cout << "**************************\n";
-    cout << "*   INPUT YOUR CIRCUIT   *\n";
-    cout << "*                        *\n";
-    cout << "*    R - Resistor        *\n";
-    cout << "*    L - Inductor        *\n";
-    cout << "*    C - Capacito        *\n";
-    cout << "*    Number to make      *\n";
-    cout << "*    parallel branch     *\n";
-    cout << "*    E - End the         *\n";
-    cout << "*    current branch      *\n";
-    cout << "*                        *\n";
-    cout << "**************************\n";
+int main() {
+    while (restart) {
+        restart = false;
+        ShowWelcomeScreen();
+        ShowInputVoltageInstructions();
+        InputVoltage();
+        ShowInputInstructions();
+        InputCircuit();
+        mainCircuit->CalculateRUI(Vphasor);
+        DisplayCircuit();
+        GetArrowKeysInput();
+    }
 }
 
 void InputCircuit()
 {
-    ShowInputInstructions();
     int len;
-    Circuit** inputCircuits = InputSectionOfCircuit(&len);
-    cout << "Input Done, length = " << len << "\n";
-    SeriesCircuit* mainCircuit = new SeriesCircuit(len, inputCircuits);
-    mainCircuit->CalculatePrintedDimension();
-    CLEAR_SCREEN;
-    int row = 1;
-    int col = 1;
-    mainCircuit->PrintCircuit(&row, &col);
-    for (int i = 0; i <= mainCircuit->printedHeight; i++)
-    {
-        cout << "\n";
-    }
+    Circuit** inputCircuits = InputSectionOfCircuit(&len, 13);
+    mainCircuit = new SeriesCircuit(len, inputCircuits);
+    mainCircuit->CalculateImpedance();
 }
-Circuit** InputSectionOfCircuit(int* length)
+Circuit** InputSectionOfCircuit(int* length, int rowsToBeCleared)
 {
     Circuit** inputCircuit = new Circuit*[MAX_COMPONENTS];
     int inputCircuitLength = 0;
     string input;
     double inputValue;
     
-    while (true)
-    {
+    while (true) {
+        CLEAR_ROW(rowsToBeCleared);
         cout << "Enter a command: ";
         cin >> input;
-        if (input == "R")
-        {
-            cout << "Enter the resistance: ";
-            cin >> inputValue;
-            inputCircuit[inputCircuitLength] = new SingleCircuit(Component(Resistor, inputValue));
-            inputCircuit[inputCircuitLength]->CalculatePrintedDimension(); // calculate its length
+        string lowerInput = ToLowercase(input);
+        if (lowerInput == "r" || lowerInput == "l" || lowerInput == "c") {
+            string promptText;
+            ComponentType inputType;
+            if (lowerInput == "r") {
+                promptText = "Enter the Resistance: ";
+                inputType = Resistor;
+            }
+            else if (lowerInput == "l") {
+                promptText = "Enter the Inductance: ";
+                inputType = L_Inductor;
+            }
+            else if (lowerInput == "c") {
+                promptText = "Enter the Capacitance: ";
+                inputType = Capacitor;
+            }
 
+            cout << promptText;
+            inputValue = GetDoubleInput();
+            inputCircuit[inputCircuitLength] = new SingleCircuit(Component(inputType, inputValue));
+            inputCircuit[inputCircuitLength]->CalculatePrintedDimension();
+            inputCircuit[inputCircuitLength]->CalculateImpedance();
             inputCircuitLength++;
         }
-        else if (input == "L")
-        {
-            cout << "Enter the inductance: ";
-            cin >> inputValue;
-            inputCircuit[inputCircuitLength] = new SingleCircuit(Component(L_Inductor, inputValue));
-            inputCircuit[inputCircuitLength]->CalculatePrintedDimension(); // calculate its length
-            inputCircuitLength++;
-        }
-        else if (input == "C")
-        {
-            cout << "Enter the capacitance: ";
-            cin >> inputValue;
-            inputCircuit[inputCircuitLength] = new SingleCircuit(Component(Capacitor, inputValue));
-            inputCircuit[inputCircuitLength]->CalculatePrintedDimension(); // calculate its length
-            inputCircuitLength++;
-        }
-        else if (input == "E")
-        {
-            *length = inputCircuitLength; //dereferencing pointer to get value
+        else if (lowerInput == "e") {
+            *length = inputCircuitLength;
             return inputCircuit;
         }
-        else
-        {
+        else {
             int branchesCount;
-            try
-            {
+            try {
                 branchesCount = stoi(input);
             }
-            catch (const invalid_argument& e)//e stand for error
-            {
-                cout << "Invalid input! Please enter a valid input." << endl;
+            catch (const invalid_argument& e) {
+                PrintErrorMessage(true);
                 continue;
             }
+
             Circuit** branches = new Circuit * [branchesCount];
-            for (int i = 0; i < branchesCount; i++)
-            {
-                int branchComponentCount;
-                Circuit** tmp = InputSectionOfCircuit(&branchComponentCount);
+            for (int i = 0; i < branchesCount; i++) {
+                CLEAR_ROW(rowsToBeCleared);
+                cout << "Branch " << i + 1 << "/" << branchesCount << "\n";
+
+                int branchComponentCount = 0;
+                Circuit** tmp = InputSectionOfCircuit(&branchComponentCount, rowsToBeCleared + 1);
                 branches[i] = new SeriesCircuit(branchComponentCount, tmp);
                 branches[i]->CalculatePrintedDimension();
+                branches[i]->CalculateImpedance();
             }
+
             inputCircuit[inputCircuitLength] = new ParallelCircuit(branchesCount, branches);
             inputCircuit[inputCircuitLength]->CalculatePrintedDimension();
+            inputCircuit[inputCircuitLength]->CalculateImpedance();
             inputCircuitLength++;
         }
     }
 }
 
-void MoveCursor(int row, int col) {
-    cout << "\033[" << row << ";" << col << "H"; //will move cursor to the dersired coord
+void DisplayCircuit() {
+    mainCircuit->CalculatePrintedDimension();
+    CLEAR_SCREEN;
+    int row = 1;
+    int col = 1;
+    mainCircuit->PrintCircuit(&row, &col);
+}
+
+void GetArrowKeysInput() {
+    disableInputBuffering();
+    SetColor(selectedComponent, YELLOW);
+    componentList[selectedComponent]->DisplayInfo();
+    while (true) {
+        char c = _getch();         // Read a character directly from the keyboard
+        if (c == 0 || c == -32) {  // Arrow keys return 0 or -32 first
+            char arrow = _getch(); // Get the actual arrow key code
+            if (arrow == 75) {     // Left arrow (ASCII code for left arrow in Windows)
+                SetColor(selectedComponent, RESET);
+                selectedComponent--;
+                if (selectedComponent < 0) {
+                    selectedComponent += componentCount;
+                }
+                SetColor(selectedComponent, YELLOW);
+            }
+            else if (arrow == 77) { // Right arrow (ASCII code for right arrow in Windows)
+                SetColor(selectedComponent, RESET);
+                selectedComponent++;
+                if (selectedComponent >= componentCount) {
+                    selectedComponent -= componentCount;
+                }
+                SetColor(selectedComponent, YELLOW);
+            }
+            MoveCursor(mainCircuit->printedHeight + 1, 1);
+            componentList[selectedComponent]->DisplayInfo();
+        }
+        else if (c == 'q') { // Quit on 'q'
+            break;
+        }
+        else if (c == 'r') {
+            restart = true;
+            break;
+        }
+    }
+
+    enableInputBuffering();
+}
+
+void SetColor(int compNo, string color) {
+    MoveCursor(componentPosition[compNo][0], componentPosition[compNo][1]);
+    cout << color;
+    if (componentList[compNo]->getType() == Resistor) {
+        cout << RESISTOR;
+    }
+    else if (componentList[compNo]->getType() == L_Inductor) {
+        cout << INDUCTOR;
+    }
+    else if (componentList[compNo]->getType() == Capacitor) {
+        cout << CAPACITOR;
+    }
+    cout << RESET;
 }

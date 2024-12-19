@@ -31,6 +31,9 @@ public:
 	complex<double> getCurrent();
 	complex<double> getVoltage();
 
+	virtual void CalculateImpedance() = 0;
+	virtual void CalculateRUI(complex<double> voltageEq) = 0;
+
 
 
 };

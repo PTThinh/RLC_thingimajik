@@ -1,2 +1,5 @@
-﻿  ParallelCircuit.cpp
+﻿  OOP Project.cpp
+D:\VGU\2024-2025\OOP\Codes\OOPFinalProject\RLC_thingimajik\OOP Project\OOP Project\OOP Project.cpp(94,44): warning C4101: 'e': unreferenced local variable
+  SingleCircuit.cpp
+  Generating Code...
   OOP Project.vcxproj -> D:\VGU\2024-2025\OOP\Codes\OOPFinalProject\RLC_thingimajik\OOP Project\x64\Debug\OOP Project.exe

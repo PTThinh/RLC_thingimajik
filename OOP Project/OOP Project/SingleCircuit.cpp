@@ -3,6 +3,7 @@
 #include <complex>
 #include "Circuit.h"
 #include "Component.h"
+#include "Input.h"
 #include "SingleCircuit.h"
 #include "OOP_Project.h"
 
@@ -21,7 +22,6 @@ SingleCircuit::SingleCircuit(const Component& comp)
 {
 	length = 1;
 	singleComponent = comp;
-	allocate();
 }
 SingleCircuit& SingleCircuit::operator=(const SingleCircuit& circuit)
 {
@@ -39,13 +39,28 @@ void SingleCircuit::CalculatePrintedDimension() {
 void SingleCircuit::PrintCircuit(int* row, int* col) {
 	MoveCursor(*row, *col);
 	if (singleComponent.getType() == Resistor) {
-		cout << "-vvvvv-";
+		cout << RESISTOR;
 	} // move to the locaion and print the corresponding component
 	else if (singleComponent.getType() == L_Inductor) {
-		cout << "-uuuuu-";
+		cout << INDUCTOR;
 	}
 	else if (singleComponent.getType() == Capacitor) {
-		cout << "--| |--";
+		cout << CAPACITOR;
 	}
+	componentPosition[componentCount] = new int[2];
+	componentPosition[componentCount][0] = *row;
+	componentPosition[componentCount][1] = *col;
+	componentList[componentCount] = &singleComponent;
+	componentCount++;
 	*col += COMPONENT_WIDTH;
+}
+
+void SingleCircuit::CalculateImpedance() {
+	impedance = singleComponent.getImpedance();
+}
+
+void SingleCircuit::CalculateRUI(complex<double> voltageEq) {
+	voltage = voltageEq;
+	current = voltage / impedance;
+	singleComponent.SetRUI(voltage, current);
 }

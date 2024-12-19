@@ -3,8 +3,10 @@
 #include <complex>
 #include "Circuit.h"
 #include "Component.h"
+#include "Input.h"
 #include "ParallelCircuit.h"
 #include "OOP_Project.h"
+
 using namespace std;
 
 void ParallelCircuit::allocate() {
@@ -94,4 +96,22 @@ void ParallelCircuit::PrintCircuit(int* row, int* col) //pointer so we can chang
     //putting cursor at the end of the branches after finnish
     *row = firstRow;
     *col = firstCol + printedLength;
+}
+
+void ParallelCircuit::CalculateImpedance() {
+    impedance = complex<double>(0, 0);
+    for (int i = 0; i < length; i++) {
+        impedance += (complex<double>(1, 0) / branches[i]->getImpedance());
+    }
+    impedance = complex<double>(1, 0) / impedance;
+    cout << "Z: " << impedance << "\n";
+}
+
+void ParallelCircuit::CalculateRUI(complex<double> voltageEq) {
+    voltage = voltageEq;
+    current = voltage / impedance;
+    cout << voltage << " | " << current << endl;
+    for (int i = 0; i < length; i++) {
+        branches[i]->CalculateRUI(voltage);
+    }
 }

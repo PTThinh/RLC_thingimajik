@@ -3,15 +3,23 @@
 #include <cmath>
 #include <complex>
 #include "Component.h"
+#include "OOP_Project.h"
+#include "Input.h"
 
 using namespace std;
+
 extern double Vm, w, phi;
+extern complex<double> Vphasor;
+extern SeriesCircuit* mainCircuit;
+
+extern Component* componentList;
+extern int selectedComponent;
 
 Component::Component(const ComponentType& type_, double& value_){
 	type = type_;
 	value = value_;
 	double Z;
-	if (type == Resistor) impedance = complex<double>(value_, 0.0);
+	if (type == Resistor) impedance = complex<double>(value, 0.0);
 	else if (type == Capacitor)
 	{
 		Z = w * value;
@@ -57,4 +65,23 @@ double Component::getValue() const {
 
 complex<double> Component::getImpedance() const {
 	return impedance;
+}
+
+void Component::SetRUI(complex<double> U, complex<double> I) {
+	voltage = U;
+	current = I;
+}
+
+void Component::DisplayInfo() {
+	CLEAR_ROW(mainCircuit->printedHeight + 2);
+	string compType = type == Resistor ? "Resistor" : type == L_Inductor ? "Inductor"
+		: "Capacitor";
+	cout << CYAN << "Component: " << RESET << compType << "\n";
+	cout << CYAN << "Impedance: " << RESET << "(" << impedance.real() << " + " << impedance.imag() << "j) ohm\n";
+	cout << CYAN << "Voltage: " << RESET << "(" << voltage.real() << " + " << voltage.imag() << "j) V\n";
+	cout << CYAN << "Current: " << RESET << "(" << current.real() << " + " << current.imag() << "j) A\n\n";
+
+	cout << "Use " << YELLOW << "Left/Right Arrow Keys" << RESET << " to select components.\n";
+	cout << "Press " << RED << "\'Q\'" << RESET << " to exit.\n";
+	cout << "Press " << GREEN << "\'R\'" << RESET << " to restart the program.\n";
 }
