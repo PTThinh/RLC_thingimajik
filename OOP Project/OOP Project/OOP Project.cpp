@@ -10,6 +10,8 @@
 #include <conio.h>
 #include <iostream>
 #include <windows.h>
+//complex is used to calculate complex value
+//window.h - clear screen; conio.h -> to get char
 
 using namespace std;
 
@@ -49,6 +51,7 @@ void InputCircuit()
 }
 Circuit** InputSectionOfCircuit(int* length, int rowsToBeCleared)
 {
+    //Input a single component, then it will be put into the big circuit array
     Circuit** inputCircuit = new Circuit*[MAX_COMPONENTS];
     int inputCircuitLength = 0;
     string input;
@@ -125,8 +128,8 @@ void DisplayCircuit() {
 }
 
 void GetArrowKeysInput() {
-    disableInputBuffering();
-    SetColor(selectedComponent, YELLOW);
+    disableInputBuffering(); //disable buffering make it so we dont have to press Enter when moving arrow
+    SetColor(selectedComponent, MAGENTA);
     componentList[selectedComponent]->DisplayInfo();
     while (true) {
         char c = _getch();         // Read a character directly from the keyboard
@@ -138,7 +141,7 @@ void GetArrowKeysInput() {
                 if (selectedComponent < 0) {
                     selectedComponent += componentCount;
                 }
-                SetColor(selectedComponent, YELLOW);
+                SetColor(selectedComponent, MAGENTA);
             }
             else if (arrow == 77) { // Right arrow (ASCII code for right arrow in Windows)
                 SetColor(selectedComponent, RESET);
@@ -146,7 +149,7 @@ void GetArrowKeysInput() {
                 if (selectedComponent >= componentCount) {
                     selectedComponent -= componentCount;
                 }
-                SetColor(selectedComponent, YELLOW);
+                SetColor(selectedComponent, MAGENTA);
             }
             MoveCursor(mainCircuit->printedHeight + 1, 1);
             componentList[selectedComponent]->DisplayInfo();
@@ -160,10 +163,10 @@ void GetArrowKeysInput() {
         }
     }
 
-    enableInputBuffering();
+    enableInputBuffering(); // enabling buffer back
 }
 
-void SetColor(int compNo, string color) {
+void SetColor(int compNo, string color) { //
     MoveCursor(componentPosition[compNo][0], componentPosition[compNo][1]);
     cout << color;
     if (componentList[compNo]->getType() == Resistor) {

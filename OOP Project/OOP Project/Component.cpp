@@ -73,15 +73,25 @@ void Component::SetRUI(complex<double> U, complex<double> I) {
 }
 
 void Component::DisplayInfo() {
+	double Vo, Vphi, Io, Iphi;
+	Vo = sqrt(voltage.real() * voltage.real() + voltage.imag() * voltage.imag());
+	Vphi = atan(voltage.imag() / voltage.real()) * (180.0 / PI);
+	Io = sqrt(current.real() * current.real() + current.imag() * current.imag());
+	Iphi = atan(current.imag() / current.real()) * (180.0 / PI);
+
 	CLEAR_ROW(mainCircuit->printedHeight + 2);
 	string compType = type == Resistor ? "Resistor" : type == L_Inductor ? "Inductor"
 		: "Capacitor";
 	cout << CYAN << "Component: " << RESET << compType << "\n";
 	cout << CYAN << "Impedance: " << RESET << "(" << impedance.real() << " + " << impedance.imag() << "j) ohm\n";
-	cout << CYAN << "Voltage: " << RESET << "(" << voltage.real() << " + " << voltage.imag() << "j) V\n";
-	cout << CYAN << "Current: " << RESET << "(" << current.real() << " + " << current.imag() << "j) A\n\n";
+	cout << CYAN << "Voltage: " << RESET << "(" << voltage.real() << " + " << voltage.imag() << "j) V = (" << Vo << "<" << Vphi << ") V \n";
+	cout << CYAN << "Current: " << RESET << "(" << current.real() << " + " << current.imag() << "j) A = (" << Io << "<" << Iphi << ") A \n\n";
 
 	cout << "Use " << YELLOW << "Left/Right Arrow Keys" << RESET << " to select components.\n";
 	cout << "Press " << RED << "\'Q\'" << RESET << " to exit.\n";
 	cout << "Press " << GREEN << "\'R\'" << RESET << " to restart the program.\n";
+
+	
+
 }
+

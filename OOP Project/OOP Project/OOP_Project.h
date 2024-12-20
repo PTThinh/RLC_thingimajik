@@ -16,7 +16,7 @@ Circuit** InputSectionOfCircuit(int* length, int rowsToBeCleared);
 void DisplayCircuit();
 
 void GetArrowKeysInput();
-void SetColor(int compNo, string color);
+void SetColor(int compNo, string color); //change color when selected component
 
 
 #endif 

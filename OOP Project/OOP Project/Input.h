@@ -2,7 +2,7 @@
 #define _INPUT_HEADER_
 
 #include <string>
-
+//defining color:
 // Foreground colors
 #define BLACK "\033[30m"
 #define RED "\033[31m"
